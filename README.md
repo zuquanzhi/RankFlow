@@ -1,6 +1,6 @@
-# Qt5/C++17 编程竞赛排行榜系统
+# Qt5/C++17 RankFlow
 
-一个基于 Qt5 和 C++17 开发的实时编程竞赛排行榜系统，支持多队伍比赛监控、实时排名更新和弹幕显示功能。
+一个基于 Qt5 和 C++17 开发的实时排行榜系统，支持多队伍比赛监控、实时排名更新和弹幕显示功能。
 
 ## ✨ 功能特性
 
@@ -10,6 +10,8 @@
 - 🔄 **自动监控**：实时监控数据文件变化
 - 🎨 **现代界面**：基于 Qt5 的美观用户界面
 - 🌐 **跨平台支持**：Windows、macOS、Linux 全平台兼容
+
+![alt text](doc/img/image.png)
 
 ## 🚀 快速开始
 
@@ -68,6 +70,7 @@ rank/
 - [🏗️ 系统架构](doc/technical/architecture.md) - 详细的架构设计
 - [📡 API 参考](doc/technical/api_reference.md) - 接口文档和规范
 - [💻 开发指南](doc/technical/development_guide.md) - 开发环境和流程
+- [📊 数据结构分析](doc/technical/data_structures.md) - 系统数据结构详解
 
 ### 🚀 部署文档
 - [📦 部署指南](doc/deployment/deployment_guide.md) - 生产环境部署
