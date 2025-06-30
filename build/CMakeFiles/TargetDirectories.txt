@@ -1,0 +1,5 @@
+/Users/zuquanzhi/Programs/rank/build/CMakeFiles/RankingSystem.dir
+/Users/zuquanzhi/Programs/rank/build/CMakeFiles/edit_cache.dir
+/Users/zuquanzhi/Programs/rank/build/CMakeFiles/rebuild_cache.dir
+/Users/zuquanzhi/Programs/rank/build/CMakeFiles/RankingSystem_autogen_timestamp_deps.dir
+/Users/zuquanzhi/Programs/rank/build/CMakeFiles/RankingSystem_autogen.dir
