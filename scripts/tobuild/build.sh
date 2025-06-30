@@ -46,7 +46,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     fi
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Linux
-    command -v qmake >/dev/null 2>&1 || { echo "错误: 需要安装Qt5开发包: sudo apt-get install qt5-default qtcharts5-dev" >&2; exit 1; }
+    command -v qmake >/dev/null 2>&1 || { echo "错误: 需要安装Qt5开发包: sudo apt-get install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+sudo apt-get install libqt5charts5-dev" >&2; exit 1; }
 fi
 
 # 创建构建目录
