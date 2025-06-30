@@ -1,0 +1,57 @@
+{
+    "team_id": "test_beta",
+    "team_name": "Beta测试团队",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T08:45:22",
+            "is_correct": true,
+            "run_time": 1120,
+            "memory_usage": 164000
+        },
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T08:52:15",
+            "is_correct": true,
+            "run_time": 890,
+            "memory_usage": 128000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T09:18:44",
+            "is_correct": true,
+            "run_time": 1650,
+            "memory_usage": 256000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T10:05:12",
+            "is_correct": false,
+            "run_time": 5000,
+            "memory_usage": 768000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T10:35:55",
+            "is_correct": false,
+            "run_time": 4800,
+            "memory_usage": 640000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T11:12:33",
+            "is_correct": true,
+            "run_time": 2980,
+            "memory_usage": 384000
+        },
+        {
+            "problem_id": "E",
+            "timestamp": "2024-07-01T12:00:00",
+            "is_correct": true,
+            "run_time": 4500,
+            "memory_usage": 896000
+        }
+    ],
+    "total_score": 500,
+    "last_submit_time": "2024-07-01T12:00:00"
+}

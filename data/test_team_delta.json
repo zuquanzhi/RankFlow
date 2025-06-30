@@ -1,0 +1,57 @@
+{
+    "team_id": "test_delta",
+    "team_name": "Delta高性能队",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T08:30:15",
+            "is_correct": true,
+            "run_time": 500,
+            "memory_usage": 64000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T08:45:30",
+            "is_correct": true,
+            "run_time": 800,
+            "memory_usage": 128000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T09:10:45",
+            "is_correct": true,
+            "run_time": 1200,
+            "memory_usage": 192000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T09:45:20",
+            "is_correct": true,
+            "run_time": 1800,
+            "memory_usage": 256000
+        },
+        {
+            "problem_id": "E",
+            "timestamp": "2024-07-01T10:30:10",
+            "is_correct": true,
+            "run_time": 2500,
+            "memory_usage": 384000
+        },
+        {
+            "problem_id": "F",
+            "timestamp": "2024-07-01T11:15:55",
+            "is_correct": true,
+            "run_time": 3200,
+            "memory_usage": 512000
+        },
+        {
+            "problem_id": "G",
+            "timestamp": "2024-07-01T12:00:30",
+            "is_correct": true,
+            "run_time": 4000,
+            "memory_usage": 640000
+        }
+    ],
+    "total_score": 700,
+    "last_submit_time": "2024-07-01T12:00:30"
+}

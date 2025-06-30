@@ -1,0 +1,50 @@
+{
+    "team_id": "test_alpha",
+    "team_name": "Alpha测试队",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T09:15:30",
+            "is_correct": true,
+            "run_time": 980,
+            "memory_usage": 128000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T09:32:45",
+            "is_correct": false,
+            "run_time": 3500,
+            "memory_usage": 256000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T09:58:12",
+            "is_correct": true,
+            "run_time": 1890,
+            "memory_usage": 192000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T10:23:07",
+            "is_correct": true,
+            "run_time": 2450,
+            "memory_usage": 384000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T11:05:33",
+            "is_correct": false,
+            "run_time": 4200,
+            "memory_usage": 512000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T11:42:18",
+            "is_correct": true,
+            "run_time": 3780,
+            "memory_usage": 448000
+        }
+    ],
+    "total_score": 400,
+    "last_submit_time": "2024-07-01T11:42:18"
+}

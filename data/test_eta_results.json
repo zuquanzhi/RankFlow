@@ -1,0 +1,106 @@
+{
+    "team_id": "test_eta",
+    "team_name": "Eta智能组",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T08:48:24",
+            "is_correct": false,
+            "run_time": 2939,
+            "memory_usage": 981487
+        },
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T09:19:17",
+            "is_correct": false,
+            "run_time": 1415,
+            "memory_usage": 680144
+        },
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T10:00:17",
+            "is_correct": true,
+            "run_time": 2711,
+            "memory_usage": 417541
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T10:09:13",
+            "is_correct": false,
+            "run_time": 4023,
+            "memory_usage": 690596
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T11:47:06",
+            "is_correct": true,
+            "run_time": 2050,
+            "memory_usage": 401215
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T12:06:35",
+            "is_correct": true,
+            "run_time": 2452,
+            "memory_usage": 90211
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T14:24:49",
+            "is_correct": false,
+            "run_time": 3630,
+            "memory_usage": 592867
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T15:39:10",
+            "is_correct": false,
+            "run_time": 4256,
+            "memory_usage": 824436
+        },
+        {
+            "problem_id": "E",
+            "timestamp": "2024-07-01T16:39:57",
+            "is_correct": false,
+            "run_time": 2063,
+            "memory_usage": 572514
+        },
+        {
+            "problem_id": "E",
+            "timestamp": "2024-07-01T17:22:10",
+            "is_correct": false,
+            "run_time": 1805,
+            "memory_usage": 501037
+        },
+        {
+            "problem_id": "E",
+            "timestamp": "2024-07-01T18:28:17",
+            "is_correct": true,
+            "run_time": 932,
+            "memory_usage": 479103
+        },
+        {
+            "problem_id": "F",
+            "timestamp": "2024-07-01T18:57:14",
+            "is_correct": true,
+            "run_time": 2103,
+            "memory_usage": 274755
+        },
+        {
+            "problem_id": "G",
+            "timestamp": "2024-07-01T20:21:18",
+            "is_correct": false,
+            "run_time": 1523,
+            "memory_usage": 865006
+        },
+        {
+            "problem_id": "G",
+            "timestamp": "2024-07-01T21:58:23",
+            "is_correct": true,
+            "run_time": 2417,
+            "memory_usage": 487570
+        }
+    ],
+    "total_score": 600,
+    "last_submit_time": "2024-07-01T21:58:23"
+}

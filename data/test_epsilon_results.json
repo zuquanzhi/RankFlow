@@ -1,0 +1,57 @@
+{
+    "team_id": "test_epsilon",
+    "team_name": "Epsilon新手队",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T08:57:10",
+            "is_correct": false,
+            "run_time": 1877,
+            "memory_usage": 485652
+        },
+        {
+            "problem_id": "A",
+            "timestamp": "2024-07-01T09:47:47",
+            "is_correct": true,
+            "run_time": 1939,
+            "memory_usage": 170971
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-07-01T10:14:32",
+            "is_correct": true,
+            "run_time": 2652,
+            "memory_usage": 487289
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-07-01T12:10:04",
+            "is_correct": true,
+            "run_time": 655,
+            "memory_usage": 68256
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T14:36:03",
+            "is_correct": false,
+            "run_time": 2368,
+            "memory_usage": 732194
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T15:16:26",
+            "is_correct": false,
+            "run_time": 3981,
+            "memory_usage": 534464
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-07-01T16:59:55",
+            "is_correct": true,
+            "run_time": 2724,
+            "memory_usage": 458704
+        }
+    ],
+    "total_score": 400,
+    "last_submit_time": "2024-07-01T16:59:55"
+}

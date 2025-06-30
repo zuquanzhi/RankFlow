@@ -4,6 +4,8 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QStandardPaths>
+#include <QCryptographicHash>
+#include <QJsonDocument>
 #include <algorithm>
 
 DataManager::DataManager(QObject *parent)
@@ -225,21 +227,49 @@ bool DataManager::loadTeamFromFile(const QString &filePath)
 
 bool DataManager::verifyFileIntegrity(const QString &jsonPath)
 {
-    QString hashPath = jsonPath;
-    hashPath.replace(".json", ".sha256");
+    QString hashPath = jsonPath + ".sha256";  // 修复：直接添加扩展名
     
     QFileInfo hashFile(hashPath);
     if (!hashFile.exists()) {
-        // 如果没有校验文件，暂时跳过验证
+        // 如果没有校验文件，跳过验证
         return true;
     }
     
-    TeamData team;
-    if (!team.loadFromFile(jsonPath)) {
+    // 直接读取并验证文件，不调用updateStatistics()
+    QFile file(jsonPath);
+    if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
     
-    return team.verifyHash(hashPath);
+    QByteArray data = file.readAll();
+    file.close();
+    
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
+    if (error.error != QJsonParseError::NoError) {
+        return false;
+    }
+    
+    // 读取存储的哈希
+    QFile hashFileObj(hashPath);
+    if (!hashFileObj.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    QString storedHash = QString::fromUtf8(hashFileObj.readAll()).trimmed();
+    hashFileObj.close();
+    
+    // 计算紧凑格式的哈希
+    QByteArray compactData = doc.toJson(QJsonDocument::Compact);
+    QString calculatedHash = QString(QCryptographicHash::hash(compactData, QCryptographicHash::Sha256).toHex());
+    
+    bool isValid = (storedHash == calculatedHash);
+    if (!isValid) {
+        qDebug() << "文件完整性验证失败:" << jsonPath;
+        qDebug() << "存储哈希:" << storedHash;
+        qDebug() << "计算哈希:" << calculatedHash;
+    }
+    
+    return isValid;
 }
 
 QStringList DataManager::findTeamFiles() const
