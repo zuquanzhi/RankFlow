@@ -11,7 +11,8 @@
 - 🎨 **现代界面**：基于 Qt5 的美观用户界面
 - 🌐 **跨平台支持**：Windows、macOS、Linux 全平台兼容
 
-![RankFlow](doc/img/image.png)
+![RankFlow](docs/img/image.png) 
+![search](docs/img/search.png)
 
 ## 🚀 快速开始
 
@@ -167,9 +168,9 @@ scripts\package\package_windows.bat   # Windows 打包
 1. 📖 查看 [用户文档](doc/user/) 和 [故障排除](doc/troubleshooting/)
 2. 🔍 搜索现有的 [Issues](../../issues)
 3. 💬 创建新的 [Issue](../../issues/new) 描述您的问题
-4. 📧 联系维护团队
+4. 📧 联系作者 [email](mailto://zuquanzhi@qq.com)
 
 ---
 
 **最后更新时间**：2025年6月30日  
-**当前版本**：v1.0.0
+**当前版本**：v1.4.0
