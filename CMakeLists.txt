@@ -28,15 +28,15 @@ set(SOURCES
 
 # 头文件
 set(HEADERS
-    src/mainwindow.h
-    src/teamdata.h
-    src/rankingmodel.h
-    src/datamanager.h
-    src/chartwidget.h
-    src/problemwidget.h
-    src/danmakuwidget.h
-    src/binarysearchtree.h
-    src/querydialog.h
+    include/mainwindow.h
+    include/teamdata.h
+    include/rankingmodel.h
+    include/datamanager.h
+    include/chartwidget.h
+    include/problemwidget.h
+    include/danmakuwidget.h
+    include/binarysearchtree.h
+    include/querydialog.h
 )
 
 # 资源文件
@@ -56,7 +56,10 @@ target_link_libraries(RankingSystem
 )
 
 # 设置包含目录
-target_include_directories(RankingSystem PRIVATE src)
+target_include_directories(RankingSystem PRIVATE 
+    include
+    ui
+)
 
 # 设置输出目录
 set_target_properties(RankingSystem PROPERTIES

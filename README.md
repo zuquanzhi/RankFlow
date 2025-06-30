@@ -11,7 +11,7 @@
 - 🎨 **现代界面**：基于 Qt5 的美观用户界面
 - 🌐 **跨平台支持**：Windows、macOS、Linux 全平台兼容
 
-![alt text](doc/img/image.png)
+![RankFlow](doc/img/image.png)
 
 ## 🚀 快速开始
 
