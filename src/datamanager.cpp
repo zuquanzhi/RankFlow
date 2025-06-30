@@ -1,13 +1,16 @@
 #include "datamanager.h"
+#include "binarysearchtree.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
 #include <QStandardPaths>
+#include <algorithm>
 
 DataManager::DataManager(QObject *parent)
     : QObject(parent)
     , m_refreshTimer(new QTimer(this))
     , m_fileWatcher(new QFileSystemWatcher(this))
+    , m_queryTree(new TeamQueryTree(this))
 {
     // 默认数据目录
     m_dataDirectory = "data";
@@ -22,6 +25,22 @@ DataManager::DataManager(QObject *parent)
     
     // 默认刷新间隔10分钟
     setRefreshInterval(600);
+    
+    // 连接查询树信号
+    connect(m_queryTree, &TeamQueryTree::treeRebuilt, 
+            this, [this](TeamQueryTree::SortCriteria criteria) {
+        addAuditEntry(QString("查询树已重建，排序标准: %1").arg(static_cast<int>(criteria)));
+    });
+    
+    connect(m_queryTree, &TeamQueryTree::teamAdded,
+            this, [this](const QString& teamId) {
+        addAuditEntry(QString("查询树中添加队伍: %1").arg(teamId));
+    });
+    
+    connect(m_queryTree, &TeamQueryTree::teamRemoved,
+            this, [this](const QString& teamId) {
+        addAuditEntry(QString("查询树中移除队伍: %1").arg(teamId));
+    });
 }
 
 void DataManager::setDataDirectory(const QString &path)
@@ -169,6 +188,9 @@ bool DataManager::loadAllTeams()
     m_teams = newTeams;
     updateFileWatcher();
     
+    // 重建查询树
+    rebuildQueryTree();
+    
     return true;
 }
 
@@ -283,5 +305,182 @@ void DataManager::addAuditEntry(const QString &entry)
     QFile logFile(logFilePath);
     if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
         logFile.write((logEntry + "\n").toUtf8());
+    }
+}
+
+// 新增的二叉树查询功能实现
+
+void DataManager::rebuildQueryTree()
+{
+    if (m_queryTree && !m_teams.isEmpty()) {
+        // 默认按分数排序构建树
+        m_queryTree->buildTree(m_teams, TeamQueryTree::ByTotalScore);
+        addAuditEntry(QString("查询树重建完成，包含%1支队伍").arg(m_teams.size()));
+    }
+}
+
+void DataManager::updateQueryTree()
+{
+    rebuildQueryTree();
+}
+
+QList<TeamData> DataManager::getTeamsSortedBy(TeamQueryTree::SortCriteria criteria)
+{
+    if (!m_queryTree) {
+        return m_teams;
+    }
+    
+    // 如果当前排序标准不同，重建树
+    if (m_queryTree->currentCriteria() != criteria) {
+        m_queryTree->buildTree(m_teams, criteria);
+    }
+    
+    return m_queryTree->getAllTeams();
+}
+
+QList<TeamData> DataManager::getTopTeamsByScore(int count)
+{
+    if (!m_queryTree) {
+        // 备选方案：手动排序
+        QList<TeamData> sortedTeams = m_teams;
+        std::sort(sortedTeams.begin(), sortedTeams.end(), 
+                  [](const TeamData& a, const TeamData& b) {
+            return a.totalScore() > b.totalScore();
+        });
+        return sortedTeams.mid(0, qMin(count, sortedTeams.size()));
+    }
+    
+    return m_queryTree->getTopTeams(count);
+}
+
+QList<TeamData> DataManager::getBottomTeamsByScore(int count)
+{
+    if (!m_queryTree) {
+        // 备选方案：手动排序
+        QList<TeamData> sortedTeams = m_teams;
+        std::sort(sortedTeams.begin(), sortedTeams.end(), 
+                  [](const TeamData& a, const TeamData& b) {
+            return a.totalScore() < b.totalScore();
+        });
+        return sortedTeams.mid(0, qMin(count, sortedTeams.size()));
+    }
+    
+    return m_queryTree->getBottomTeams(count);
+}
+
+QList<TeamData> DataManager::getTeamsInScoreRange(int minScore, int maxScore)
+{
+    if (!m_queryTree) {
+        // 备选方案：线性搜索
+        QList<TeamData> result;
+        for (const TeamData& team : m_teams) {
+            if (team.totalScore() >= minScore && team.totalScore() <= maxScore) {
+                result.append(team);
+            }
+        }
+        return result;
+    }
+    
+    return m_queryTree->getTeamsInScoreRange(minScore, maxScore);
+}
+
+QList<TeamData> DataManager::searchTeamsByName(const QString& namePattern)
+{
+    if (!m_queryTree) {
+        // 备选方案：线性搜索
+        QList<TeamData> result;
+        for (const TeamData& team : m_teams) {
+            if (team.teamName().contains(namePattern, Qt::CaseInsensitive)) {
+                result.append(team);
+            }
+        }
+        return result;
+    }
+    
+    return m_queryTree->searchByName(namePattern);
+}
+
+QList<TeamData> DataManager::searchTeamsBySolvedProblems(int minSolved)
+{
+    if (!m_queryTree) {
+        // 备选方案：线性搜索
+        QList<TeamData> result;
+        for (const TeamData& team : m_teams) {
+            if (team.solvedProblems() >= minSolved) {
+                result.append(team);
+            }
+        }
+        return result;
+    }
+    
+    return m_queryTree->searchBySolvedProblems(minSolved);
+}
+
+QList<TeamData> DataManager::searchTeamsByAccuracy(double minAccuracy)
+{
+    if (!m_queryTree) {
+        // 备选方案：线性搜索
+        QList<TeamData> result;
+        for (const TeamData& team : m_teams) {
+            if (team.accuracy() >= minAccuracy) {
+                result.append(team);
+            }
+        }
+        return result;
+    }
+    
+    return m_queryTree->searchByAccuracy(minAccuracy);
+}
+
+int DataManager::getTeamRank(const QString& teamId) const
+{
+    // 按分数排序获取排名
+    QList<TeamData> sortedTeams = m_teams;
+    std::sort(sortedTeams.begin(), sortedTeams.end(), 
+              [](const TeamData& a, const TeamData& b) {
+        return a.totalScore() > b.totalScore();
+    });
+    
+    for (int i = 0; i < sortedTeams.size(); ++i) {
+        if (sortedTeams[i].teamId() == teamId) {
+            return i + 1; // 排名从1开始
+        }
+    }
+    
+    return -1; // 未找到
+}
+
+double DataManager::getAverageScore() const
+{
+    if (m_teams.isEmpty()) {
+        return 0.0;
+    }
+    
+    int totalScore = 0;
+    for (const TeamData& team : m_teams) {
+        totalScore += team.totalScore();
+    }
+    
+    return static_cast<double>(totalScore) / m_teams.size();
+}
+
+int DataManager::getMedianScore() const
+{
+    if (m_teams.isEmpty()) {
+        return 0;
+    }
+    
+    QList<int> scores;
+    for (const TeamData& team : m_teams) {
+        scores.append(team.totalScore());
+    }
+    
+    std::sort(scores.begin(), scores.end());
+    
+    int size = scores.size();
+    if (size % 2 == 0) {
+        return (scores[size/2 - 1] + scores[size/2]) / 2;
+    } else {
+        return scores[size/2];
     }
 }

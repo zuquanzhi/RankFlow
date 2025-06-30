@@ -1,5 +1,8 @@
 #include "mainwindow.h"
+#include "querydialog.h"
 #include <QApplication>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDesktopServices>
@@ -171,10 +174,18 @@ void MainWindow::setupControlPanel()
     m_refreshProgressBar = new QProgressBar;
     m_refreshProgressBar->setVisible(false);
     
+    // 高级查询按钮
+    QPushButton *queryButton = new QPushButton("高级查询");
+    queryButton->setToolTip("打开基于二叉树的高级查询对话框 (Ctrl+F)");
+    queryButton->setIcon(QIcon(":/icons/app_icon_32x32.png")); // 使用应用图标
+    connect(queryButton, &QPushButton::clicked, this, &MainWindow::onOpenQueryDialog);
+    
     controlLayout->addWidget(m_refreshButton);
     controlLayout->addWidget(m_autoRefreshButton);
     controlLayout->addWidget(intervalLabel);
     controlLayout->addWidget(m_refreshIntervalSpinBox);
+    controlLayout->addWidget(new QLabel("|")); // 分隔符
+    controlLayout->addWidget(queryButton);     // 查询按钮
     controlLayout->addWidget(sortLabel);
     controlLayout->addWidget(m_sortTypeCombo);
     controlLayout->addStretch();
@@ -219,6 +230,14 @@ void MainWindow::setupMenuBar()
     m_viewLogAction = new QAction("查看审计日志(&L)", this);
     viewMenu->addAction(m_viewLogAction);
     
+    // 查询菜单
+    QMenu *queryMenu = menuBar()->addMenu("查询(&Q)");
+    
+    m_queryAction = new QAction("高级查询(&A)", this);
+    m_queryAction->setShortcut(QKeySequence("Ctrl+F"));
+    m_queryAction->setToolTip("打开基于二叉树的高级查询对话框");
+    queryMenu->addAction(m_queryAction);
+    
     // 帮助菜单
     QMenu *helpMenu = menuBar()->addMenu("帮助(&H)");
     
@@ -257,6 +276,7 @@ void MainWindow::connectSignals()
     connect(m_fullScreenAction, &QAction::triggered, this, &MainWindow::onFullScreen);
     connect(m_aboutAction, &QAction::triggered, this, &MainWindow::onAbout);
     connect(m_exitAction, &QAction::triggered, this, &QWidget::close);
+    connect(m_queryAction, &QAction::triggered, this, &MainWindow::onOpenQueryDialog);
     
     // 排行榜模型信号
     connect(m_rankingModel, &RankingModel::dataUpdated, this, &MainWindow::updateStatusBar);
@@ -477,4 +497,12 @@ void MainWindow::saveSettings()
     
     // 排序方式
     settings.setValue("sortType", m_sortTypeCombo->currentIndex());
+}
+
+void MainWindow::onOpenQueryDialog()
+{
+    QueryDialog *queryDialog = new QueryDialog(m_dataManager, this);
+    queryDialog->setModal(true);
+    queryDialog->exec();
+    queryDialog->deleteLater();
 }

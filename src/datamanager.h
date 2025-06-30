@@ -6,6 +6,7 @@
 #include <QFileSystemWatcher>
 #include <QDateTime>
 #include "teamdata.h"
+#include "binarysearchtree.h"
 
 class DataManager : public QObject
 {
@@ -36,6 +37,23 @@ public:
     void logOperation(const QString &operation);
     QStringList getAuditLog() const;
 
+    // 新增的二叉树查询功能
+    TeamQueryTree* getQueryTree() { return m_queryTree; }
+    
+    // 高级查询接口
+    QList<TeamData> getTeamsSortedBy(TeamQueryTree::SortCriteria criteria);
+    QList<TeamData> getTopTeamsByScore(int count);
+    QList<TeamData> getBottomTeamsByScore(int count);
+    QList<TeamData> getTeamsInScoreRange(int minScore, int maxScore);
+    QList<TeamData> searchTeamsByName(const QString& namePattern);
+    QList<TeamData> searchTeamsBySolvedProblems(int minSolved);
+    QList<TeamData> searchTeamsByAccuracy(double minAccuracy);
+    
+    // 查询统计
+    int getTeamRank(const QString& teamId) const;
+    double getAverageScore() const;
+    int getMedianScore() const;
+
 signals:
     void dataRefreshed();
     void teamDataChanged(const QString &teamId);
@@ -58,6 +76,7 @@ private:
     QFileSystemWatcher *m_fileWatcher;
     QDateTime m_lastRefreshTime;
     QStringList m_auditLog;
+    TeamQueryTree *m_queryTree;
     
     bool loadAllTeams();
     bool loadTeamFromFile(const QString &filePath);
@@ -65,6 +84,8 @@ private:
     QStringList findTeamFiles() const;
     void updateFileWatcher();
     void addAuditEntry(const QString &entry);
+    void rebuildQueryTree();
+    void updateQueryTree();
 };
 
 #endif // DATAMANAGER_H

@@ -22,6 +22,8 @@ set(SOURCES
     src/chartwidget.cpp
     src/problemwidget.cpp
     src/danmakuwidget.cpp
+    src/binarysearchtree.cpp
+    src/querydialog.cpp
 )
 
 # 头文件
@@ -33,11 +35,8 @@ set(HEADERS
     src/chartwidget.h
     src/problemwidget.h
     src/danmakuwidget.h
-)
-
-# UI文件
-set(UI_FILES
-    ui/mainwindow.ui
+    src/binarysearchtree.h
+    src/querydialog.h
 )
 
 # 资源文件
@@ -46,7 +45,7 @@ set(RESOURCES
 )
 
 # 创建可执行文件
-add_executable(RankingSystem ${SOURCES} ${HEADERS} ${UI_FILES} ${RESOURCES})
+add_executable(RankingSystem ${SOURCES} ${HEADERS} ${RESOURCES})
 
 # 链接Qt库
 target_link_libraries(RankingSystem 

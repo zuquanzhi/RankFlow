@@ -23,6 +23,7 @@
 #include "chartwidget.h"
 #include "problemwidget.h"
 #include "danmakuwidget.h"
+#include "querydialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -47,6 +48,9 @@ private slots:
     void onViewAuditLog();
     void onAbout();
     void onFullScreen();
+    
+    // 新增的查询功能
+    void onOpenQueryDialog();
     
     // 表格操作
     void onTableSelectionChanged();
@@ -108,7 +112,8 @@ private:
     QAction *m_fullScreenAction;
     QAction *m_aboutAction;
     QAction *m_exitAction;
-    
+    QAction *m_queryAction;  // 新增的查询菜单项
+
     // 状态
     bool m_isFullScreen;
     bool m_autoRefreshEnabled;
