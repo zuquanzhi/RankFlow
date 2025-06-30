@@ -1,0 +1,226 @@
+# Qt5/C++17 编程竞赛排行榜系统 - Git 忽略文件
+# ==============================================
+
+# 构建目录和文件
+build/
+build-*/
+*-build-*/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+
+# Qt 相关文件
+*.pro.user
+*.pro.user.*
+*.qws
+*.autosave
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+*.Debug
+*.Release
+*.tmp
+ui_*.h
+qrc_*.cpp
+moc_*.cpp
+moc_*.h
+*.moc
+
+# CMake 生成的文件
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+CTestTestfile.cmake
+_deps/
+*.cmake
+!CMakeLists.txt
+
+# IDE 和编辑器文件
+.vscode/
+.vs/
+*.vcxproj*
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.idea/
+*.iml
+*.ipr
+*.iws
+.eclipse/
+*.project
+*.cproject
+*.settings/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# 编译器和调试器文件
+*.pdb
+*.ilk
+*.map
+*.exp
+*.gch
+*.pch
+*.bin
+*.elf
+*.hex
+
+# 打包和分发目录
+package/
+package-*/
+dist/
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.7z
+*.rar
+
+# 日志文件
+logs/
+*.log
+crash_*.txt
+debug_*.txt
+
+# 临时和缓存文件
+tmp/
+temp/
+cache/
+*.tmp
+*.temp
+*.cache
+*.pid
+*.lock
+
+# 备份文件
+*.bak
+*.backup
+*.orig
+*.save
+*~
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# 运行时数据
+data/generated/
+data/cache/
+data/temp/
+*.pid
+*.seed
+*.pid.lock
+
+# 证书和密钥文件
+*.p12
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+certificates/
+keys/
+
+# 配置文件（可能包含敏感信息）
+config/local.conf
+config/production.conf
+.env
+.env.local
+.env.*.local
+
+# 测试相关
+coverage/
+*.gcov
+*.gcda
+*.gcno
+test_results/
+test_output/
+
+# 文档生成文件
+doc/html/
+doc/latex/
+doc/generated/
+*.aux
+*.fdb_latexmk
+*.fls
+*.toc
+*.out
+*.nav
+*.snm
+*.vrb
+
+# 特定于此项目的忽略
+# 比赛数据（如果包含敏感信息）
+data/contest_*.json
+data/teams_real.json
+data/results_final.json
+
+# 打包脚本生成的临时文件
+*.iconset/
+icon_*.png
+AppIcon.iconset/
+
+# 安装包和分发文件
+RankingSystem*.dmg
+RankingSystem*.zip
+RankingSystem*.tar.gz
+*.AppImage
+
+# 调试和性能分析文件
+*.dSYM/
+*.su
+*.idb
+*.stackdump
+heaptrack.*
+callgrind.*
+massif.*
+
+# 静态分析报告
+static_analysis/
+cppcheck_report.xml
+clang_report/
+
+# 依赖管理
+vcpkg_installed/
+conan.lock
+.conan/
+
+# 其他工具生成的文件
+compile_commands.json
+.clangd/
+.ccls-cache/
+tags
+TAGS
+.ycm_extra_conf.py*
+
+# 本地开发配置
+.local/
+.venv/
+venv/
+
+# 项目特定的本地文件
+local_settings.json
+developer_notes.txt
+TODO_private.txt

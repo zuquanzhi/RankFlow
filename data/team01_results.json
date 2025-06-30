@@ -1,0 +1,36 @@
+{
+    "team_id": "team01",
+    "team_name": "冠军队伍",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-06-30T14:30:22",
+            "is_correct": true,
+            "run_time": 1250,
+            "memory_usage": 256000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-06-30T14:45:15",
+            "is_correct": true,
+            "run_time": 2100,
+            "memory_usage": 512000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-06-30T15:20:33",
+            "is_correct": false,
+            "run_time": 5000,
+            "memory_usage": 1024000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-06-30T15:35:28",
+            "is_correct": true,
+            "run_time": 3200,
+            "memory_usage": 768000
+        }
+    ],
+    "total_score": 300,
+    "last_submit_time": "2024-06-30T15:35:28"
+}

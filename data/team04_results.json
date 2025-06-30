@@ -1,0 +1,29 @@
+{
+    "team_id": "team04",
+    "team_name": "编程精英",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-06-30T14:35:08",
+            "is_correct": true,
+            "run_time": 1100,
+            "memory_usage": 245000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2024-06-30T15:00:42",
+            "is_correct": true,
+            "run_time": 2900,
+            "memory_usage": 720000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-06-30T15:30:15",
+            "is_correct": false,
+            "run_time": 6000,
+            "memory_usage": 1200000
+        }
+    ],
+    "total_score": 200,
+    "last_submit_time": "2024-06-30T15:30:15"
+}

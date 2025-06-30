@@ -1,0 +1,29 @@
+{
+    "team_id": "team02",
+    "team_name": "算法大师",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-06-30T14:25:10",
+            "is_correct": true,
+            "run_time": 980,
+            "memory_usage": 230000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-06-30T14:50:30",
+            "is_correct": true,
+            "run_time": 1800,
+            "memory_usage": 480000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2024-06-30T15:15:45",
+            "is_correct": true,
+            "run_time": 2800,
+            "memory_usage": 640000
+        }
+    ],
+    "total_score": 300,
+    "last_submit_time": "2024-06-30T15:15:45"
+}

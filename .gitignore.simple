@@ -1,0 +1,50 @@
+# Qt5/C++17 项目简化版 .gitignore
+# 适用于快速开发和小型项目
+
+# 构建文件
+build/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Qt 特定文件
+*.pro.user*
+ui_*.h
+qrc_*.cpp
+moc_*.cpp
+moc_*.h
+Makefile*
+
+# CMake 文件
+CMakeCache.txt
+CMakeFiles/
+
+# IDE 文件
+.vscode/
+.vs/
+.idea/
+*.user
+.DS_Store
+
+# 打包文件
+package/
+dist/
+*.dmg
+*.zip
+*.tar.gz
+
+# 日志和临时文件
+logs/
+*.log
+*.tmp
+*.cache
+
+# 系统文件
+Thumbs.db
+*.swp
+*~

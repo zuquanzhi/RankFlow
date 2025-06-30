@@ -1,0 +1,36 @@
+{
+    "team_id": "team07",
+    "team_name": "最新参赛队伍",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2025-06-30T11:00:00",
+            "is_correct": true,
+            "run_time": 900,
+            "memory_usage": 200000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2025-06-30T11:15:00",
+            "is_correct": true,
+            "run_time": 1500,
+            "memory_usage": 400000
+        },
+        {
+            "problem_id": "C",
+            "timestamp": "2025-06-30T11:30:00",
+            "is_correct": true,
+            "run_time": 2800,
+            "memory_usage": 600000
+        },
+        {
+            "problem_id": "D",
+            "timestamp": "2025-06-30T11:45:00",
+            "is_correct": true,
+            "run_time": 3200,
+            "memory_usage": 800000
+        }
+    ],
+    "total_score": 400,
+    "last_submit_time": "2025-06-30T11:45:00"
+}

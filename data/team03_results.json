@@ -1,0 +1,29 @@
+{
+    "team_id": "team03",
+    "team_name": "代码战士",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-06-30T14:40:12",
+            "is_correct": true,
+            "run_time": 1450,
+            "memory_usage": 280000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-06-30T15:10:25",
+            "is_correct": false,
+            "run_time": 4500,
+            "memory_usage": 900000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2024-06-30T15:25:18",
+            "is_correct": true,
+            "run_time": 2200,
+            "memory_usage": 520000
+        }
+    ],
+    "total_score": 200,
+    "last_submit_time": "2024-06-30T15:25:18"
+}

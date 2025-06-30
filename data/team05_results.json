@@ -1,0 +1,22 @@
+{
+    "team_id": "team05",
+    "team_name": "技术新星",
+    "submissions": [
+        {
+            "problem_id": "A",
+            "timestamp": "2024-06-30T14:50:30",
+            "is_correct": true,
+            "run_time": 1350,
+            "memory_usage": 260000
+        },
+        {
+            "problem_id": "B",
+            "timestamp": "2025-06-30T10:35:00",
+            "is_correct": true,
+            "run_time": 1800,
+            "memory_usage": 480000
+        }
+    ],
+    "total_score": 200,
+    "last_submit_time": "2025-06-30T10:35:00"
+}
