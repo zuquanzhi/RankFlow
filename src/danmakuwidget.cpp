@@ -112,19 +112,20 @@ void DanmakuWidget::setupRandomMessages()
                      << "逻辑严密"
                      << "创意十足"
                      << "完美解答"
-                     << "天秀操作";
+                     << "天秀操作"
+                     << "原神启动";
     m_encourageMessages = encourageMessages;
     
     QStringList userNames;
-    userNames << "编程爱好者"
-              << "算法小白"
+    userNames << "strong哥"
+              << "诗人我吃"
               << "代码狂人"
-              << "技术达人"
+              << "root"
               << "开发者"
               << "程序猿"
               << "码农"
-              << "极客"
-              << "技术宅"
+              << "deepseek"
+              << "OpenAI"
               << "代码诗人";
     m_userNames = userNames;
 }

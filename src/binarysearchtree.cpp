@@ -15,11 +15,9 @@ TeamQueryTree::~TeamQueryTree()
 
 void TeamQueryTree::buildTree(const QList<TeamData>& teams, SortCriteria criteria)
 {
-    // 暂时使用简单的实现，避免复杂的模板问题
     m_currentCriteria = criteria;
     m_teams = teams;
     
-    // 简单排序而不是构建二叉树
     std::sort(m_teams.begin(), m_teams.end(), [criteria](const TeamData& a, const TeamData& b) {
         switch (criteria) {
             case ByTeamId:
@@ -27,7 +25,7 @@ void TeamQueryTree::buildTree(const QList<TeamData>& teams, SortCriteria criteri
             case ByTeamName:
                 return a.teamName() < b.teamName();
             case ByTotalScore:
-                return a.totalScore() > b.totalScore(); // 降序
+                return a.totalScore() > b.totalScore(); 
             case ByLastSubmitTime:
                 return a.lastSubmitTime() > b.lastSubmitTime();
             case BySolvedProblems:
