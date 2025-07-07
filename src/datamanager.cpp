@@ -1,5 +1,6 @@
 #include "datamanager.h"
 #include "binarysearchtree.h"
+#include "networkmanager.h"  // 添加网络管理器头文件
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
@@ -13,6 +14,9 @@ DataManager::DataManager(QObject *parent)
     , m_refreshTimer(new QTimer(this))
     , m_fileWatcher(new QFileSystemWatcher(this))
     , m_queryTree(new TeamQueryTree(this))
+    , m_networkManager(new NetworkManager(this))  // 初始化网络管理器
+    , m_dataSource(LocalFile)                     // 默认本地文件
+    , m_networkEnabled(false)                     // 默认禁用网络
 {
     // 默认数据目录
     m_dataDirectory = "data";
@@ -24,6 +28,21 @@ DataManager::DataManager(QObject *parent)
     // 设置文件监视器
     connect(m_fileWatcher, &QFileSystemWatcher::fileChanged, 
             this, &DataManager::onFileChanged);
+    
+    // 连接网络管理器信号
+    connect(m_networkManager, &NetworkManager::teamDataReceived,
+            this, &DataManager::onNetworkDataReceived);
+    connect(m_networkManager, &NetworkManager::networkError,
+            this, &DataManager::onNetworkError);
+    connect(m_networkManager, &NetworkManager::connected,
+            this, &DataManager::onNetworkConnected);
+    connect(m_networkManager, &NetworkManager::disconnected,
+            this, &DataManager::onNetworkDisconnected);
+    
+    // 设置默认网络配置
+    m_networkManager->setServerUrl("http://localhost:8080");
+    m_networkManager->setApiEndpoint("/api/teams");
+    m_networkManager->setDataSource(NetworkManager::HTTP_API);
     
     // 默认刷新间隔10分钟
     setRefreshInterval(600);
@@ -76,18 +95,24 @@ void DataManager::setAutoRefresh(bool enabled)
 void DataManager::refreshData()
 {
     emit refreshStarted();
-    addAuditEntry("开始手动刷新数据");
+    addAuditEntry("开始数据刷新");
     
-    if (loadAllTeams()) {
-        m_lastRefreshTime = QDateTime::currentDateTime();
-        emit dataRefreshed();
-        addAuditEntry(QString("数据刷新完成，共载入%1支队伍").arg(m_teams.size()));
-    } else {
-        emit errorOccurred("数据刷新失败");
-        addAuditEntry("数据刷新失败");
+    switch (m_dataSource) {
+    case Network:
+        refreshFromNetwork();
+        break;
+    case LocalFile:
+        refreshFromLocal();
+        break;
+    case Hybrid:
+        // 混合模式：优先网络，失败则本地
+        if (m_networkEnabled && m_networkManager->isConnected()) {
+            refreshFromNetwork();
+        } else {
+            refreshFromLocal();
+        }
+        break;
     }
-    
-    emit refreshFinished();
 }
 
 bool DataManager::loadTeamData(const QString &teamId)
@@ -513,4 +538,129 @@ int DataManager::getMedianScore() const
     } else {
         return scores[size/2];
     }
+}
+
+// ==== 网络功能实现 ====
+
+void DataManager::setDataSource(DataSource source)
+{
+    if (m_dataSource != source) {
+        m_dataSource = source;
+        addAuditEntry(QString("数据源已切换为: %1").arg(
+            source == Network ? "网络" : source == LocalFile ? "本地文件" : "混合模式"));
+        emit dataSourceChanged(source);
+    }
+}
+
+void DataManager::setNetworkEnabled(bool enabled)
+{
+    m_networkEnabled = enabled;
+    if (enabled && !m_networkManager->isConnected()) {
+        m_networkManager->connectToServer();
+        addAuditEntry("网络功能已启用");
+    }
+}
+
+void DataManager::setServerUrl(const QString &url)
+{
+    m_networkManager->setServerUrl(url);
+    addAuditEntry(QString("服务器URL设置为: %1").arg(url));
+}
+
+void DataManager::setApiEndpoint(const QString &endpoint)
+{
+    m_networkManager->setApiEndpoint(endpoint);
+}
+
+void DataManager::setApiAuthentication(const QString &username, const QString &password)
+{
+    m_networkManager->setAuthentication(username, password);
+}
+
+void DataManager::setApiKey(const QString &apiKey)
+{
+    m_networkManager->setApiKey(apiKey);
+}
+
+void DataManager::setNetworkUpdateInterval(int milliseconds)
+{
+    m_networkManager->setUpdateInterval(milliseconds);
+}
+
+void DataManager::refreshFromNetwork()
+{
+    if (m_networkManager->isConnected()) {
+        m_networkManager->fetchAllTeams();
+    } else {
+        if (m_dataSource == Hybrid) {
+            refreshFromLocal();
+        }
+    }
+}
+
+void DataManager::refreshFromLocal()
+{
+    if (loadAllTeams()) {
+        m_lastRefreshTime = QDateTime::currentDateTime();
+        emit dataRefreshed();
+    } else {
+        emit errorOccurred("本地数据加载失败");
+    }
+    emit refreshFinished();
+}
+
+void DataManager::fallbackToLocal()
+{
+    addAuditEntry("网络获取失败，回退到本地文件");
+    refreshFromLocal();
+}
+
+void DataManager::onNetworkDataReceived(const QList<TeamData> &teams)
+{
+    m_teams = teams;
+    m_lastRefreshTime = QDateTime::currentDateTime();
+    rebuildQueryTree();
+    emit dataRefreshed();
+    emit refreshFinished();
+    addAuditEntry(QString("网络数据接收完成，共%1支队伍").arg(teams.size()));
+}
+
+void DataManager::onNetworkError(const QString &error)
+{
+    addAuditEntry(QString("网络错误: %1").arg(error));
+    
+    if (m_dataSource == Hybrid) {
+        fallbackToLocal();
+    } else {
+        emit errorOccurred(QString("网络错误: %1").arg(error));
+        emit refreshFinished();
+    }
+    
+    emit networkErrorOccurred(error);
+}
+
+void DataManager::onNetworkConnected()
+{
+    addAuditEntry("网络连接成功");
+    emit networkConnected();
+    
+    if (m_dataSource == Network || m_dataSource == Hybrid) {
+        m_networkManager->fetchAllTeams();
+    }
+}
+
+void DataManager::onNetworkDisconnected()
+{
+    addAuditEntry("网络连接已断开");
+    emit networkDisconnected();
+}
+
+bool DataManager::isNetworkConnected() const
+{
+    return m_networkManager->isConnected();
+}
+
+int DataManager::networkLatency() const
+{
+    return m_networkManager->networkLatency();
 }

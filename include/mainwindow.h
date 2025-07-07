@@ -24,6 +24,7 @@
 #include "problemwidget.h"
 #include "danmakuwidget.h"
 #include "querydialog.h"
+#include "networkconfigdialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -51,6 +52,13 @@ private slots:
     
     // 新增的查询功能
     void onOpenQueryDialog();
+    
+    // 网络配置功能
+    void onOpenNetworkConfig();
+    void onDataSourceChanged(int index);
+    void onNetworkConnected();
+    void onNetworkDisconnected();
+    void onNetworkError(const QString &error);
     
     // 表格操作
     void onTableSelectionChanged();
@@ -96,6 +104,10 @@ private:
     QSpinBox *m_refreshIntervalSpinBox;
     QPushButton *m_autoRefreshButton;
     QProgressBar *m_refreshProgressBar;
+    
+    // 网络控制组件
+    QComboBox *m_dataSourceCombo;
+    QLabel *m_networkStatusLabel;
     
     // 状态显示
     QLabel *m_titleLabel;

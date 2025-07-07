@@ -24,6 +24,8 @@ set(SOURCES
     src/danmakuwidget.cpp
     src/binarysearchtree.cpp
     src/querydialog.cpp
+    src/networkmanager.cpp
+    src/networkconfigdialog.cpp
 )
 
 # 头文件
@@ -37,6 +39,8 @@ set(HEADERS
     include/danmakuwidget.h
     include/binarysearchtree.h
     include/querydialog.h
+    include/networkmanager.h
+    include/networkconfigdialog.h
 )
 
 # 资源文件

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "querydialog.h"
+#include "networkconfigdialog.h"
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -31,8 +32,13 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(1200, 800);
     resize(1600, 1000);
     
-    // 初始加载数据
-    QTimer::singleShot(500, m_dataManager, &DataManager::refreshData);
+    // 延迟初始化 - 让UI先加载完成
+    QTimer::singleShot(500, this, [this]() {
+        // 只有在本地文件模式下才自动刷新
+        if (m_dataManager->dataSource() == DataManager::LocalFile) {
+            m_dataManager->refreshData();
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -177,18 +183,41 @@ void MainWindow::setupControlPanel()
     // 高级查询按钮
     QPushButton *queryButton = new QPushButton("高级查询");
     queryButton->setToolTip("打开基于二叉树的高级查询对话框 (Ctrl+F)");
-    queryButton->setIcon(QIcon(":/icons/app_icon_32x32.png")); // 使用应用图标
+    queryButton->setIcon(QIcon(":/icons/app_icon_32x32.png"));
     connect(queryButton, &QPushButton::clicked, this, &MainWindow::onOpenQueryDialog);
+    
+    // 网络配置按钮
+    QPushButton *networkButton = new QPushButton("网络配置");
+    networkButton->setToolTip("配置网络数据源和服务器连接");
+    networkButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
+    connect(networkButton, &QPushButton::clicked, this, &MainWindow::onOpenNetworkConfig);
+    
+    // 数据源切换
+    QLabel *sourceLabel = new QLabel("数据源:");
+    m_dataSourceCombo = new QComboBox;
+    m_dataSourceCombo->addItem("本地文件", static_cast<int>(DataManager::LocalFile));
+    m_dataSourceCombo->addItem("网络实时", static_cast<int>(DataManager::Network));
+    m_dataSourceCombo->addItem("混合模式", static_cast<int>(DataManager::Hybrid));
+    connect(m_dataSourceCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &MainWindow::onDataSourceChanged);
+    
+    // 网络状态指示器
+    m_networkStatusLabel = new QLabel("网络: 未连接");
+    m_networkStatusLabel->setStyleSheet("color: #e74c3c;");
     
     controlLayout->addWidget(m_refreshButton);
     controlLayout->addWidget(m_autoRefreshButton);
     controlLayout->addWidget(intervalLabel);
     controlLayout->addWidget(m_refreshIntervalSpinBox);
     controlLayout->addWidget(new QLabel("|")); // 分隔符
-    controlLayout->addWidget(queryButton);     // 查询按钮
+    controlLayout->addWidget(queryButton);
+    controlLayout->addWidget(networkButton);    // 网络配置按钮
+    controlLayout->addWidget(sourceLabel);      // 数据源标签
+    controlLayout->addWidget(m_dataSourceCombo); // 数据源选择
     controlLayout->addWidget(sortLabel);
     controlLayout->addWidget(m_sortTypeCombo);
     controlLayout->addStretch();
+    controlLayout->addWidget(m_networkStatusLabel); // 网络状态
     controlLayout->addWidget(m_teamCountLabel);
     controlLayout->addWidget(m_topTeamLabel);
     controlLayout->addWidget(m_refreshStatusLabel);
@@ -265,6 +294,16 @@ void MainWindow::connectSignals()
             this, &MainWindow::onRefreshIntervalChanged);
     connect(m_sortTypeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onSortTypeChanged);
+    
+    // 网络相关信号
+    connect(m_dataSourceCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &MainWindow::onDataSourceChanged);
+    connect(m_dataManager, &DataManager::networkConnected, 
+            this, &MainWindow::onNetworkConnected);
+    connect(m_dataManager, &DataManager::networkDisconnected,
+            this, &MainWindow::onNetworkDisconnected);
+    connect(m_dataManager, &DataManager::networkErrorOccurred,
+            this, &MainWindow::onNetworkError);
     
     // 表格信号
     connect(m_rankingTable->selectionModel(), &QItemSelectionModel::selectionChanged,
@@ -471,6 +510,11 @@ void MainWindow::loadSettings()
     // 排序方式
     int sortType = settings.value("sortType", 0).toInt();
     m_sortTypeCombo->setCurrentIndex(sortType);
+    
+    // 数据源设置
+    int dataSource = settings.value("dataSource", static_cast<int>(DataManager::LocalFile)).toInt();
+    m_dataSourceCombo->setCurrentIndex(dataSource);
+    m_dataManager->setDataSource(static_cast<DataManager::DataSource>(dataSource));
 }
 
 void MainWindow::saveSettings()
@@ -497,6 +541,9 @@ void MainWindow::saveSettings()
     
     // 排序方式
     settings.setValue("sortType", m_sortTypeCombo->currentIndex());
+    
+    // 数据源
+    settings.setValue("dataSource", m_dataSourceCombo->currentIndex());
 }
 
 void MainWindow::onOpenQueryDialog()
@@ -505,4 +552,61 @@ void MainWindow::onOpenQueryDialog()
     queryDialog->setModal(true);
     queryDialog->exec();
     queryDialog->deleteLater();
+}
+
+void MainWindow::onOpenNetworkConfig()
+{
+    NetworkConfigDialog *networkDialog = new NetworkConfigDialog(m_dataManager, this);
+    networkDialog->setModal(true);
+    networkDialog->exec();
+    networkDialog->deleteLater();
+}
+
+void MainWindow::onDataSourceChanged(int index)
+{
+    DataManager::DataSource source = static_cast<DataManager::DataSource>(
+        m_dataSourceCombo->itemData(index).toInt());
+    
+    m_dataManager->setDataSource(source);
+    
+    // 更新UI状态
+    switch (source) {
+    case DataManager::LocalFile:
+        m_networkStatusLabel->setText("网络: 本地模式");
+        m_networkStatusLabel->setStyleSheet("color: #7f8c8d;");
+        break;
+    case DataManager::Network:
+        m_networkStatusLabel->setText("网络: 网络模式");
+        m_networkStatusLabel->setStyleSheet("color: #3498db;");
+        break;
+    case DataManager::Hybrid:
+        m_networkStatusLabel->setText("网络: 混合模式");
+        m_networkStatusLabel->setStyleSheet("color: #9b59b6;");
+        break;
+    }
+    
+    statusBar()->showMessage(QString("数据源已切换为: %1")
+                            .arg(m_dataSourceCombo->currentText()), 3000);
+}
+
+void MainWindow::onNetworkConnected()
+{
+    m_networkStatusLabel->setText(QString("网络: 已连接 (%1ms)")
+                                 .arg(m_dataManager->networkLatency()));
+    m_networkStatusLabel->setStyleSheet("color: #27ae60;");
+    statusBar()->showMessage("网络连接成功", 3000);
+}
+
+void MainWindow::onNetworkDisconnected()
+{
+    m_networkStatusLabel->setText("网络: 连接断开");
+    m_networkStatusLabel->setStyleSheet("color: #e74c3c;");
+    statusBar()->showMessage("网络连接已断开", 3000);
+}
+
+void MainWindow::onNetworkError(const QString &error)
+{
+    m_networkStatusLabel->setText("网络: 连接错误");
+    m_networkStatusLabel->setStyleSheet("color: #e74c3c;");
+    statusBar()->showMessage(QString("网络错误: %1").arg(error), 5000);
 }
