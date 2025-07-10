@@ -13,7 +13,7 @@
 4. **src/querydialog.cpp** - 查询对话框实现文件
 
 ### 文档文件
-5. **doc/user/binary_tree_query_guide.md** - 用户使用指南
+5. **docs/user/binary_tree_query_guide.md** - 用户使用指南
 6. **test_binary_tree_query.sh** - 功能测试脚本
 
 ## 技术架构

@@ -52,36 +52,40 @@ rank/
 │   ├── package/            # 打包脚本
 │   ├── deploy/             # 部署脚本
 │   └── tools/              # 工具脚本
-└── doc/                    # 完整文档
+└── docs/                    # 完整文档
     ├── user/               # 用户文档
     ├── technical/          # 技术文档
     ├── deployment/         # 部署文档
-    └── troubleshooting/    # 故障排除
+    ├── troubleshooting/    # 故障排除
+    └── img/                # 图片资源
 ```
 
 ## 📚 文档导航
 
 ### 👥 用户文档
-- [📖 用户手册](doc/user/user_manual.md) - 完整的用户操作指南
-- [💾 安装指南](doc/user/install_guide.md) - 系统安装和配置
-- [📥 数据导入指南](doc/user/data_import_guide.md) - 比赛数据导入说明
-- [🎮 演示说明](doc/user/demo.md) - 功能演示和示例
+- [📖 用户手册](docs/user/user_manual.md) - 完整的用户操作指南
+- [💾 安装指南](docs/user/install_guide.md) - 系统安装和配置
+- [📥 数据导入指南](docs/user/data_import_guide.md) - 比赛数据导入说明
+- [🎮 演示说明](docs/user/demo.md) - 功能演示和示例
+- [🔍 二叉树查询指南](docs/user/binary_tree_query_guide.md) - 高效查询功能使用说明
 
 ### 🔧 技术文档
-- [🏗️ 系统架构](doc/technical/architecture.md) - 详细的架构设计
-- [📡 API 参考](doc/technical/api_reference.md) - 接口文档和规范
-- [💻 开发指南](doc/technical/development_guide.md) - 开发环境和流程
-- [📊 数据结构分析](doc/technical/data_structures.md) - 系统数据结构详解
+- [🏗️ 系统架构](docs/technical/architecture_integrated.md) - 详细的架构设计与网络功能
+- [📡 API 参考](docs/technical/api_reference.md) - 接口文档和规范
+- [💻 开发指南](docs/technical/development_guide.md) - 开发环境和流程
+- [📊 数据结构与算法](docs/technical/data_structures_optimized.md) - 系统数据结构与算法设计
+- [⚙️ 功能模块](docs/technical/function_modules.md) - 系统功能模块设计
+- [🔍 二叉树实现](docs/technical/binary_tree_implementation.md) - 二叉搜索树技术实现
 
 ### 🚀 部署文档
-- [📦 部署指南](doc/deployment/deployment_guide.md) - 生产环境部署
-- [📦 打包指南](doc/deployment/packaging_guide.md) - 应用打包说明
-- [⚙️ 脚本说明](doc/deployment/scripts_guide.md) - 自动化脚本使用
+- [📦 部署指南](docs/deployment/deployment_guide.md) - 生产环境部署
+- [📦 打包指南](docs/deployment/packaging_guide.md) - 应用打包说明
+- [⚙️ 脚本说明](docs/deployment/scripts_guide.md) - 自动化脚本使用
 
 ### 🔍 故障排除
-- [🍎 macOS 问题](doc/troubleshooting/macos_issues.md) - macOS 平台特有问题
-- [💥 崩溃分析](doc/troubleshooting/crash_analysis.md) - 程序崩溃诊断
-- [❓ 常见问题](doc/troubleshooting/common_issues.md) - FAQ 和解决方案
+- [🍎 macOS 问题](docs/troubleshooting/macos_issues.md) - macOS 平台特有问题
+- [💥 崩溃分析](docs/troubleshooting/crash_analysis.md) - 程序崩溃诊断
+- [❓ 常见问题](docs/troubleshooting/common_issues.md) - FAQ 和解决方案
 
 ## 🛠️ 开发环境
 
@@ -165,7 +169,7 @@ scripts\package\package_windows.bat   # Windows 打包
 
 如果您遇到问题或有疑问：
 
-1. 📖 查看 [用户文档](doc/user/) 和 [故障排除](doc/troubleshooting/)
+1. 📖 查看 [用户文档](docs/user/) 和 [故障排除](docs/troubleshooting/)
 2. 🔍 搜索现有的 [Issues](../../issues)
 3. 💬 创建新的 [Issue](../../issues/new) 描述您的问题
 4. 📧 联系作者 [email](mailto://zuquanzhi@qq.com)

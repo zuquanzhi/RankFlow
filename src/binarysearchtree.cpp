@@ -81,7 +81,6 @@ QList<TeamData> TeamQueryTree::getTeamsInRange(const QString& minValue, const QS
         return QList<TeamData>();
     }
     
-    // 简化的范围查询实现
     QList<TeamData> result;
     
     // 根据当前排序标准进行范围匹配

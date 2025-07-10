@@ -566,8 +566,8 @@ void DataManager::loadData()
 
 ### 相关文档
 - [版本控制指南](version_control.md) - 完整的 Git 配置和最佳实践
-- [数据结构分析](data_structures.md) - 系统中使用的数据结构详解
-- [系统架构](architecture.md) - 了解系统整体设计
+- [数据结构与算法](data_structures_optimized.md) - 系统中使用的数据结构详解
+- [系统架构与网络功能](architecture_integrated.md) - 了解系统整体设计
 - [API 参考](api_reference.md) - 查看接口文档
 
 ### 快速开始

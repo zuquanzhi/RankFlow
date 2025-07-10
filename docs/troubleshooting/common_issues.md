@@ -386,7 +386,7 @@ rmdir /s "%APPDATA%\RankingSystem"  # Windows
 
 - [用户手册](../user/user_manual.md)
 - [安装指南](../user/install_guide.md)
-- [技术文档](../technical/architecture.md)
+- [技术文档](../technical/architecture_integrated.md)
 - [macOS专项问题](macos_issues.md)
 
 ---
