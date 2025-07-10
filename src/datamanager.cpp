@@ -105,11 +105,12 @@ void DataManager::refreshData()
         refreshFromLocal();
         break;
     case Hybrid:
-        // 混合模式：优先网络，失败则本地
+        // 混合模式：同时从本地和网络获取数据
+        refreshFromLocal(); // 先从本地加载
+        
+        // 如果网络可用，同时从网络获取数据，合并后会更新显示
         if (m_networkEnabled && m_networkManager->isConnected()) {
             refreshFromNetwork();
-        } else {
-            refreshFromLocal();
         }
         break;
     }
@@ -593,7 +594,15 @@ void DataManager::refreshFromNetwork()
         m_networkManager->fetchAllTeams();
     } else {
         if (m_dataSource == Hybrid) {
-            refreshFromLocal();
+            // 在混合模式下，如果已经加载了本地数据，无需再次加载
+            if (m_teams.isEmpty()) {
+                refreshFromLocal();
+            } else {
+                emit refreshFinished();
+            }
+        } else {
+            emit errorOccurred("网络连接不可用");
+            emit refreshFinished();
         }
     }
 }
@@ -611,18 +620,59 @@ void DataManager::refreshFromLocal()
 
 void DataManager::fallbackToLocal()
 {
-    addAuditEntry("网络获取失败，回退到本地文件");
-    refreshFromLocal();
+    // 只有当当前没有数据（未从本地加载过）时才需要回退加载
+    if (m_teams.isEmpty()) {
+        addAuditEntry("网络获取失败，回退到本地文件");
+        refreshFromLocal();
+    } else {
+        addAuditEntry("网络获取失败，保留已加载的本地数据");
+        emit refreshFinished();
+    }
 }
 
 void DataManager::onNetworkDataReceived(const QList<TeamData> &teams)
 {
-    m_teams = teams;
+    // 根据数据源模式决定如何处理网络数据
+    if (m_dataSource == Hybrid) {
+        // 在混合模式下，合并本地和网络数据而不是替换
+        QHash<QString, TeamData> teamMap;
+        
+        // 先把现有数据（本地加载的）放入映射
+        for (const TeamData &team : m_teams) {
+            teamMap[team.teamId()] = team;
+        }
+        
+        // 合并/更新网络数据
+        int newTeamsCount = 0;
+        int updatedTeamsCount = 0;
+        for (const TeamData &networkTeam : teams) {
+            QString teamId = networkTeam.teamId();
+            if (teamMap.contains(teamId)) {
+                // 更新现有队伍数据
+                teamMap[teamId] = networkTeam;
+                updatedTeamsCount++;
+            } else {
+                // 添加新队伍
+                teamMap[teamId] = networkTeam;
+                newTeamsCount++;
+            }
+        }
+        
+        // 更新队伍列表
+        m_teams = teamMap.values();
+        
+        addAuditEntry(QString("混合模式数据合并完成：更新%1支队伍，新增%2支队伍")
+                      .arg(updatedTeamsCount).arg(newTeamsCount));
+    } else {
+        // 在网络模式下，直接替换
+        m_teams = teams;
+        addAuditEntry(QString("网络数据接收完成，共%1支队伍").arg(teams.size()));
+    }
+    
     m_lastRefreshTime = QDateTime::currentDateTime();
     rebuildQueryTree();
     emit dataRefreshed();
     emit refreshFinished();
-    addAuditEntry(QString("网络数据接收完成，共%1支队伍").arg(teams.size()));
 }
 
 void DataManager::onNetworkError(const QString &error)

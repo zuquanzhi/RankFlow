@@ -378,7 +378,7 @@ rmdir /s "%APPDATA%\RankingSystem"  # Windows
 
 ### 联系方式
 
-- **技术支持邮箱**：support@example.com
+- **技术支持邮箱**：zuquanzhi@qq.com
 - **问题反馈**：GitHub Issues
 - **用户社区**：Discord/QQ群
 
